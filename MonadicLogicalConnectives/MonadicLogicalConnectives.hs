@@ -10,7 +10,8 @@ import Control.Monad
 
 
 negProp :: Monad m => (t -> m Bool) -> (t -> m Bool)
-negProp f = (\z -> f z >>= return . not)
+negProp = (.) (flip (>>=) (return . not))
+-- equivalent definition: negProp f = (\z -> f z >>= return . not)
 
 
 (<&&>) :: Monad m => (t -> m Bool) -> (t -> m Bool) -> t -> m Bool
@@ -30,7 +31,7 @@ x `iff` y = (x <&&> y) <||> ((negProp x) <&&> (negProp y))
 
 
 
-infixr 9 `iff`
-infixr 8 <&&>
-infixr 7 <||>
-infixr 6 `imp`
+infixr 6 `iff`
+infixr 7 <&&>
+infixr 8 <||>
+infixr 9 `imp`
